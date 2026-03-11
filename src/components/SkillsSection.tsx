@@ -1,30 +1,39 @@
 import { motion } from 'framer-motion';
 
+type Skill = {
+  name: string;
+  level: number;
+};
+
 const skills = {
-  frontend: [
-    { name: 'React', level: 95 },
-    { name: 'TypeScript', level: 90 },
-    { name: 'Next.js', level: 88 },
-    { name: 'Tailwind CSS', level: 95 },
-    { name: 'Vue.js', level: 75 },
+  communication: [
+    { name: 'Public Speaking', level: 70 },
+    { name: 'Active Listening', level: 80 },
+    { name: 'Persuasion', level: 80 },
   ],
-  backend: [
-    { name: 'Node.js', level: 90 },
-    { name: 'Python', level: 85 },
-    { name: 'PostgreSQL', level: 88 },
-    { name: 'MongoDB', level: 82 },
-    { name: 'GraphQL', level: 78 },
+
+  socialImpact: [
+    { name: 'Empathy', level: 90 },
+    { name: 'Social Awareness', level: 85 },
+    { name: 'Community Engagement', level: 88 },
   ],
-  tools: [
-    { name: 'Git', level: 95 },
-    { name: 'Docker', level: 80 },
-    { name: 'AWS', level: 75 },
-    { name: 'Figma', level: 85 },
-    { name: 'CI/CD', level: 82 },
+
+  innovation: [
+    { name: 'Innovation', level: 85 },
+    { name: 'Experimentation', level: 90 },
+    { name: 'Idea Development', level: 80 },
   ],
 };
 
-function SkillBar({ name, level, delay }: { name: string; level: number; delay: number }) {
+function SkillBar({
+  name,
+  level,
+  delay,
+}: {
+  name: string;
+  level: number;
+  delay: number;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -37,6 +46,7 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
         <span className="font-medium">{name}</span>
         <span className="text-sm text-muted-foreground">{level}%</span>
       </div>
+
       <div className="h-2 bg-muted rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
@@ -54,6 +64,7 @@ export default function SkillsSection() {
   return (
     <section id="skills" className="py-20 md:py-32">
       <div className="container mx-auto px-4">
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,15 +72,20 @@ export default function SkillsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-primary font-medium mb-2 block">Keahlian</span>
+          <span className="text-primary font-medium mb-2 block">
+            Keahlian
+          </span>
+
           <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
-            Skills &amp; Teknologi
+            Tingkat Kemampuan yang saya Punya 
           </h2>
+
           <div className="w-20 h-1 bg-primary mx-auto rounded-full" />
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Frontend */}
+
+          {/* Communication */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -79,18 +95,26 @@ export default function SkillsSection() {
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">🎨</span>
+                <span className="text-2xl">💬</span>
               </div>
-              <h3 className="font-display text-xl font-bold">Frontend</h3>
+
+              <h3 className="font-display text-xl font-bold">
+                Communication
+              </h3>
             </div>
+
             <div className="space-y-4">
-              {skills.frontend.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
+              {skills.communication.map((skill, index) => (
+                <SkillBar
+                  key={skill.name}
+                  {...skill}
+                  delay={index * 0.1}
+                />
               ))}
             </div>
           </motion.div>
 
-          {/* Backend */}
+          {/* Social Impact */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -100,18 +124,26 @@ export default function SkillsSection() {
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">⚙️</span>
+                <span className="text-2xl">🌍</span>
               </div>
-              <h3 className="font-display text-xl font-bold">Backend</h3>
+
+              <h3 className="font-display text-xl font-bold">
+                Social Impact
+              </h3>
             </div>
+
             <div className="space-y-4">
-              {skills.backend.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
+              {skills.socialImpact.map((skill, index) => (
+                <SkillBar
+                  key={skill.name}
+                  {...skill}
+                  delay={index * 0.1}
+                />
               ))}
             </div>
           </motion.div>
 
-          {/* Tools */}
+          {/* Innovation */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -121,16 +153,25 @@ export default function SkillsSection() {
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">🛠️</span>
+                <span className="text-2xl">🚀</span>
               </div>
-              <h3 className="font-display text-xl font-bold">Tools &amp; Lainnya</h3>
+
+              <h3 className="font-display text-xl font-bold">
+                Innovation
+              </h3>
             </div>
+
             <div className="space-y-4">
-              {skills.tools.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
+              {skills.innovation.map((skill, index) => (
+                <SkillBar
+                  key={skill.name}
+                  {...skill}
+                  delay={index * 0.1}
+                />
               ))}
             </div>
           </motion.div>
+
         </div>
       </div>
     </section>

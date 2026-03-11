@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
-import { Code2, Video, Coffee, Rocket } from 'lucide-react';
+import { BookIcon, Medal, PencilIcon, Code2 } from 'lucide-react';
 
 export default function AboutSection() {
   const stats = [
-    { icon: Code2, value: '50+', label: 'Projects Selesai' },
-    { icon: Video, value: '100+', label: 'Video Konten' },
-    { icon: Coffee, value: '1000+', label: 'Cangkir Kopi' },
-    { icon: Rocket, value: '5+', label: 'Tahun Pengalaman' },
+    { icon: BookIcon, value: '100+', label: 'Tugas Selesai' },
+    { icon: Medal, value: '15+', label: 'Prestasi yang telah di capai' },
+    { icon: PencilIcon, value: '5+', label: 'Karya Tulis yang telah dibuat' },
+    { icon: Code2, value: '2+', label: 'Tahun Pengalaman Belajar Coding' },
   ];
 
   return (
@@ -36,12 +36,12 @@ export default function AboutSection() {
             <div className="relative">
               <div className="aspect-square rounded-2xl overflow-hidden glass shadow-card">
                 <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                  <span className="text-8xl">👨‍💻</span>
+                  <span className="text-8xl">👨🏻‍🎓</span>
                 </div>
               </div>
               <div className="absolute -bottom-6 -right-6 p-4 glass rounded-xl shadow-card">
-                <p className="font-display font-bold text-2xl text-gradient">5+ Tahun</p>
-                <p className="text-sm text-muted-foreground">Pengalaman</p>
+                <p className="font-display font-bold text-2xl text-gradient">9+ Tahun</p>
+                <p className="text-sm text-muted-foreground">Pengalaman belajar</p>
               </div>
             </div>
           </motion.div>
@@ -57,15 +57,14 @@ export default function AboutSection() {
               Passionate Developer &amp; Creator
             </h3>
             <p className="text-muted-foreground leading-relaxed">
-              Saya adalah seorang Fullstack Web Developer dengan passion yang kuat dalam menciptakan 
-              solusi digital yang inovatif. Dengan pengalaman lebih dari 5 tahun, saya telah 
-              membantu berbagai klien dan perusahaan dalam mewujudkan ide-ide mereka menjadi 
-              aplikasi web yang powerful dan user-friendly.
+              perkenalkan nama saya Muhammad Daffah Aqiilah, saya lahir di Lhoksukon pada tanggal 18 April 2010. 
+              Saat ini saya sedang menempuh pendidikan di Man 1 Banda Aceh pada kelas X-2 (Pre-International). 
+              Saya saat ini sedang mempelajari dasar program percodingan saya untuk membuat web. 
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Selain coding, saya juga aktif sebagai Content Creator, berbagi pengetahuan 
-              tentang pemrograman dan teknologi melalui berbagai platform. Saya percaya bahwa 
-              berbagi ilmu adalah cara terbaik untuk terus belajar dan berkembang.
+              saya juga merupakan alumni MTsN 1 Banda Aceh, disana merupakan tempat pertama bagi saya dalam mengenal
+              program percodingan namun percodingan terhadap robot mengguanakan bahasa C++. Selain itu saya juga belajar
+              untuk membuat sebuah karya tulis ilmiah dan juga menulis jurnal.
             </p>
             <div className="grid grid-cols-2 gap-4 pt-4">
               {stats.map((stat, index) => (

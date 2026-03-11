@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 
 const projects = [
   {
-    title: 'E-Commerce Platform',
-    description: 'Platform e-commerce modern dengan fitur lengkap termasuk payment gateway, inventory management, dan analytics dashboard.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-    image: '🛒',
+    title: 'Learning Platform',
+    description: 'Platform belajar modern dengan fitur lengkap termasuk materi, Video Pembelajaran, Serta tugas untuk mengukur kemampuan siswa',
+    tags: ['Materi belajar', 'Video pembelajarn', 'Tugas Akhir'],
+    image: '📚',
     color: 'from-blue-500/20 to-cyan-500/20',
     github: '#',
     demo: '#',
