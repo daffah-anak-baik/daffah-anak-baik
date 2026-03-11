@@ -24,23 +24,28 @@ export default function HeroSection() {
         {/* GRID 2 KOLOM */}
         <div className="grid md:grid-cols-2 gap-10 items-center">
 
-          {/* FOTO KIRI */}
+          {/* FOTO KIRI - DIPERBESAR DAN DIBUAT BULAT SEMPURNA */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="flex justify-center"
           >
-            <img
-              src="/foto.jpg"
-              alt="Foto Daffah"
-              className="w-72 md:w-96 rounded-full shadow-2xl border-4 border-white/20"
-            />
+            <div className="relative group">
+              {/* Efek Cahaya di belakang foto */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              
+              <img
+                src="/foto.jpg"
+                alt="Foto Daffah"
+                className="relative w-80 h-80 md:w-[450px] md:h-[450px] rounded-full object-cover shadow-2xl border-4 border-white/20 aspect-square"
+              />
+            </div>
           </motion.div>
 
 
           {/* TEKS KANAN */}
-          <div>
+          <div className="text-center md:text-left"> {/* Ditambah agar lebih rapi di mobile */}
 
             <motion.span
               className="inline-block px-4 py-2 rounded-full glass text-sm font-medium text-primary mb-6"
@@ -59,14 +64,14 @@ export default function HeroSection() {
             >
               Hai 👋
               <br />
-              <span className="text-gradient">& Selamat Datang</span>
+              <span className="text-gradient">Selamat Datang</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-lg text-muted-foreground mb-8 max-w-xl"
+              className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto md:mx-0"
             >
               Saya Muhammad Daffah Aqiilah salah satu siswa di Man 1 Banda Aceh di kelas X-2 
               (Pre-International), Ini adalah web pertama saya yang merupakan tugas 1 pelajaran coding.
@@ -78,7 +83,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
-              className="flex flex-wrap justify-center gap-4 mb-10"
+              className="flex flex-wrap justify-center md:justify-start gap-4 mb-10"
             >
               <Button
                 size="lg"
@@ -110,7 +115,7 @@ export default function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.9 }}
-              className="flex items-center justify-center Ig:justify-start gap-6">
+              className="flex items-center justify-center md:justify-start gap-6">
               {[
                 { icon: Github, href: "https://github.com/daffah-anak-baik", label: 'GitHub' },
                 { icon: Linkedin, href: "https://www.linkedin.com/in/muhammad-daffah-4906a1379", label: 'LinkedIn' },

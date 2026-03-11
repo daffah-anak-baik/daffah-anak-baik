@@ -58,6 +58,7 @@ export default function ContactSection() {
     e.preventDefault();
     setErrors({});
 
+    // 1. Validasi Input menggunakan Zod
     const result = contactSchema.safeParse(formData);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
@@ -72,16 +73,38 @@ export default function ContactSection() {
 
     setIsSubmitting(true);
 
-    // Simulate sending (replace with actual API call later)
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      // 2. Kirim data ke Formspree
+      const response = await fetch("https://formspree.io/f/myknerqe", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData),
+      });
 
-    toast({
-      title: 'Pesan Terkirim! ✨',
-      description: 'Terima kasih telah menghubungi saya. Saya akan membalas secepatnya.',
-    });
-
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setIsSubmitting(false);
+      if (response.ok) {
+        // Berhasil
+        toast({
+          title: 'Pesan Terkirim! ✨',
+          description: 'Terima kasih telah menghubungi saya. Saya akan membalas secepatnya.',
+        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        // Jika Formspree merespon tapi ada error
+        throw new Error('Gagal mengirim ke server');
+      }
+    } catch (error) {
+      // Error Jaringan atau sistem
+      toast({
+        variant: "destructive",
+        title: 'Oops! Terjadi Kesalahan',
+        description: 'Pesan gagal dikirim. Silakan coba lagi nanti.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
