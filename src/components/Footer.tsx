@@ -7,7 +7,7 @@ export default function Footer() {
   const socialLinks = [
     { icon: Github, href: "https://github.com/daffah-anak-baik", label: 'GitHub' },
     { icon: Linkedin, href: "https://www.linkedin.com/in/muhammad-daffah-4906a1379?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app", label: 'LinkedIn' },
-    { icon: Youtube, href: '#', label: 'YouTube' },
+    //{ icon: Youtube, href: '#', label: 'YouTube' },
     { icon: Instagram, href: "https://www.instagram.com/_.daffah?igsh=eWF1dTl0dGFqMG83&utm_source=qr", label: 'Instagram' },
   ];
 
@@ -36,6 +36,8 @@ export default function Footer() {
               <a
                 key={social.label}
                 href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
                 aria-label={social.label}
               >

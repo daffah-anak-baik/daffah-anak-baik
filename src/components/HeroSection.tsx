@@ -89,10 +89,10 @@ export default function HeroSection() {
             className="flex items-center justify-center gap-6"
           >
             {[
-              { icon: Github, href: '#', label: 'GitHub' },
-              { icon: Linkedin, href: '#', label: 'LinkedIn' },
-              { icon: Youtube, href: '#', label: 'YouTube' },
-              { icon: Instagram, href: '#', label: 'Instagram' },
+              { icon: Github, href: "https://github.com/daffah-anak-baik", label: 'GitHub' },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/muhammad-daffah-4906a1379?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app", label: 'LinkedIn' },
+              //{ icon: Youtube, href: '#', label: 'YouTube' },
+              { icon: Instagram, href: "https://www.instagram.com/_.daffah?igsh=eWF1dTl0dGFqMG83&utm_source=qr", label: 'Instagram' },
             ].map((social) => (
               <motion.a
                 key={social.label}
