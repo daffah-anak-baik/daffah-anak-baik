@@ -5,10 +5,10 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { icon: Github, href: '#', label: 'GitHub' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+    { icon: Github, href: "https://github.com/daffah-anak-baik", label: 'GitHub' },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/muhammad-daffah-4906a1379?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app", label: 'LinkedIn' },
     { icon: Youtube, href: '#', label: 'YouTube' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Instagram, href: "https://www.instagram.com/_.daffah?igsh=eWF1dTl0dGFqMG83&utm_source=qr", label: 'Instagram' },
   ];
 
   return (
@@ -21,9 +21,9 @@ export default function Footer() {
             viewport={{ once: true }}
             className="flex items-center gap-2 text-muted-foreground"
           >
-            <span>© {currentYear} Made with</span>
+            <span>© {currentYear} Made </span>
             <Heart className="h-4 w-4 text-destructive fill-destructive" />
-            <span>by Developer</span>
+            <span>by Daffah</span>
           </motion.div>
 
           <motion.div
