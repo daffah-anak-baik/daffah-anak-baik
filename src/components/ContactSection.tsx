@@ -1,271 +1,161 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, MapPin, Phone, Send, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, MessageSquare, MapPin, Send, Loader2, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
-import { z } from 'zod';
 
-const contactSchema = z.object({
-  name: z.string().trim().min(1, 'Nama harus diisi').max(100, 'Nama terlalu panjang'),
-  email: z.string().trim().email('Email tidak valid').max(255, 'Email terlalu panjang'),
-  subject: z.string().trim().min(1, 'Subjek harus diisi').max(200, 'Subjek terlalu panjang'),
-  message: z.string().trim().min(1, 'Pesan harus diisi').max(2000, 'Pesan terlalu panjang'),
-});
+interface ContactProps {
+  isDark: boolean;
+}
 
-const contactInfo = [
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'muhammaddaffah01@gmail.com',
-    href: 'mailto:muhammaddaffah01@gmail.com',
-  },
-  {
-    icon: Phone,
-    label: 'Telepon',
-    value: '+62 895 3391 54312',
-    href: 'tel:+62895339154312',
-  },
-  {
-    icon: MapPin,
-    label: 'Lokasi',
-    value: 'Aceh, Indonesia',
-    href: '#',
-  },
-];
+export default function ContactSection({ isDark }: ContactProps) {
+  const [submitting, setSubmitting] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
 
-export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrors({});
-
-    // 1. Validasi Input menggunakan Zod
-    const result = contactSchema.safeParse(formData);
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {};
-      result.error.errors.forEach((err) => {
-        if (err.path[0]) {
-          fieldErrors[err.path[0] as string] = err.message;
-        }
-      });
-      setErrors(fieldErrors);
-      return;
-    }
-
-    setIsSubmitting(true);
+    setSubmitting(true);
+    
+    const form = e.currentTarget;
+    const data = new FormData(form);
 
     try {
-      // 2. Kirim data ke Formspree
       const response = await fetch("https://formspree.io/f/myknerqe", {
         method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(formData),
+        body: data,
+        headers: { 'Accept': 'application/json' }
       });
 
       if (response.ok) {
-        // Berhasil
-        toast({
-          title: 'Pesan Terkirim! ✨',
-          description: 'Terima kasih telah menghubungi saya. Saya akan membalas secepatnya.',
-        });
-        setFormData({ name: '', email: '', subject: '', message: '' });
-      } else {
-        // Jika Formspree merespon tapi ada error
-        throw new Error('Gagal mengirim ke server');
+        setSucceeded(true);
+        form.reset();
       }
     } catch (error) {
-      // Error Jaringan atau sistem
-      toast({
-        variant: "destructive",
-        title: 'Oops! Terjadi Kesalahan',
-        description: 'Pesan gagal dikirim. Silakan coba lagi nanti.',
-      });
+      console.error("Error submitting form", error);
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
 
   return (
-    <section id="contact" className="py-20 md:py-32">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="text-primary font-medium mb-2 block">Kontak</span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
-            Hubungi Saya
-          </h2>
-          <div className="w-20 h-1 bg-primary mx-auto rounded-full" />
-        </motion.div>
+    <section 
+      id="contact" 
+      className="relative py-16 md:py-24 overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed"
+      style={{ backgroundImage: "url('/background.jpg')" }}
+    >
+      {/* Overlay 65% Konsisten */}
+      <div className="absolute inset-0 bg-black/65 z-0" />
 
-        <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
-            <div>
-              <h3 className="font-display text-2xl font-bold mb-4">
-                Mari Berkolaborasi!
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Punya project menarik atau ingin berkolaborasi? Jangan ragu untuk 
-                menghubungi saya. Saya selalu terbuka untuk diskusi tentang project 
-                baru, ide kreatif, atau kesempatan untuk menjadi bagian dari visi Anda.
-              </p>
-            </div>
+      <div className="container relative z-10 mx-auto px-4">
+        <div className={`max-w-6xl mx-auto backdrop-blur-xl border rounded-[2.5rem] p-8 md:p-14 transition-all duration-500 
+          ${isDark ? 'bg-black/45 border-white/10 shadow-2xl' : 'bg-white/85 border-white shadow-xl'}`}>
 
-            <div className="space-y-4">
-              {contactInfo.map((info, index) => (
-                <motion.a
-                  key={info.label}
-                  href={info.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="flex items-center gap-4 p-4 glass rounded-xl hover:shadow-card-hover transition-all group"
-                >
-                  <div className="p-3 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <info.icon className="h-5 w-5 text-primary" />
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            
+            {/* SISI KIRI: INFO KONTAK (TEMA ORANGE) */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-10"
+            >
+              <div>
+                <span className={`font-black mb-2 block uppercase tracking-[0.3em] text-[10px] ${isDark ? 'text-orange-400' : 'text-orange-700'}`}>
+                  GET IN TOUCH
+                </span>
+                <h2 className={`font-display text-4xl md:text-6xl font-extrabold mb-6 italic tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  Connect <span className="text-orange-500">With Me</span>
+                </h2>
+                <div className="w-24 h-1.5 bg-orange-500 rounded-full mb-10 shadow-[0_0_15px_rgba(249,115,22,0.5)]" />
+                
+                <h3 className={`text-xl font-black mb-4 uppercase italic ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                  LET'S COLLABORATE!
+                </h3>
+                <p className={`text-sm leading-relaxed max-w-md ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  Have an interesting research idea or want to collaborate on a project? 
+                  Reach out to me through any of the platforms below.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  { icon: Mail, label: 'EMAIL', value: 'muhammaddaffah01@gmail.com' },
+                  { icon: MessageSquare, label: 'WHATSAPP', value: '+62 895 3391 54312' },
+                  { icon: MapPin, label: 'LOCATION', value: 'Aceh, Indonesia' }
+                ].map((item, idx) => (
+                  <div key={idx} className={`flex items-center gap-5 p-5 rounded-2xl border transition-all hover:translate-x-2
+                    ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/10' : 'bg-slate-50 border-slate-100 shadow-sm'}`}>
+                    <div className="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                      <item.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <p className={`text-[10px] font-black tracking-widest ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>{item.label}</p>
+                      <p className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{item.value}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">{info.label}</p>
-                    <p className="font-medium">{info.value}</p>
-                  </div>
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <form onSubmit={handleSubmit} className="space-y-6 p-6 glass rounded-2xl shadow-card">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium">
-                    Nama
-                  </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Nama Anda"
-                    className={errors.name ? 'border-destructive' : ''}
-                  />
-                  {errors.name && (
-                    <p className="text-xs text-destructive">{errors.name}</p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="email@example.com"
-                    className={errors.email ? 'border-destructive' : ''}
-                  />
-                  {errors.email && (
-                    <p className="text-xs text-destructive">{errors.email}</p>
-                  )}
-                </div>
+                ))}
               </div>
+            </motion.div>
 
-              <div className="space-y-2">
-                <label htmlFor="subject" className="text-sm font-medium">
-                  Subjek
-                </label>
-                <Input
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  placeholder="Subjek pesan"
-                  className={errors.subject ? 'border-destructive' : ''}
-                />
-                {errors.subject && (
-                  <p className="text-xs text-destructive">{errors.subject}</p>
-                )}
-              </div>
+            {/* SISI KANAN: FORM & ANIMASI THANK YOU (TEMA ORANGE) */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <AnimatePresence mode="wait">
+                {!succeeded ? (
+                  <motion.div
+                    key="form-container"
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className={`p-8 md:p-10 rounded-[2rem] border ${isDark ? 'bg-black/30 border-white/5' : 'bg-white border-slate-200'}`}
+                  >
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className={`text-[10px] font-black uppercase tracking-widest ml-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Full Name</label>
+                          <input required name="name" type="text" placeholder="Your Name" className={`w-full p-4 rounded-xl text-xs border outline-none transition-all ${isDark ? 'bg-black/40 border-white/10 text-white focus:border-orange-500' : 'bg-slate-50 border-slate-200 focus:border-orange-500'}`} />
+                        </div>
+                        <div className="space-y-2">
+                          <label className={`text-[10px] font-black uppercase tracking-widest ml-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Email Address</label>
+                          <input required name="email" type="email" placeholder="email@example.com" className={`w-full p-4 rounded-xl text-xs border outline-none transition-all ${isDark ? 'bg-black/40 border-white/10 text-white focus:border-orange-500' : 'bg-slate-50 border-slate-200 focus:border-orange-500'}`} />
+                        </div>
+                      </div>
 
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium">
-                  Pesan
-                </label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Tuliskan pesan Anda..."
-                  rows={5}
-                  className={errors.message ? 'border-destructive' : ''}
-                />
-                {errors.message && (
-                  <p className="text-xs text-destructive">{errors.message}</p>
-                )}
-              </div>
+                      <div className="space-y-2">
+                        <label className={`text-[10px] font-black uppercase tracking-widest ml-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Message</label>
+                        <textarea required name="message" rows={6} placeholder="How can I help you?" className={`w-full p-4 rounded-xl text-xs border outline-none transition-all resize-none ${isDark ? 'bg-black/40 border-white/10 text-white focus:border-orange-500' : 'bg-slate-50 border-slate-200 focus:border-orange-500'}`} />
+                      </div>
 
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full rounded-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Mengirim...
-                  </>
+                      <Button disabled={submitting} type="submit" className="w-full bg-orange-600 hover:bg-orange-500 text-white font-black italic rounded-xl py-8 transition-all active:scale-95 shadow-lg shadow-orange-900/30">
+                        {submitting ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Send className="w-5 h-5 mr-2" />}
+                        {submitting ? 'SENDING...' : 'SEND MESSAGE'}
+                      </Button>
+                    </form>
+                  </motion.div>
                 ) : (
-                  <>
-                    <Send className="h-4 w-4 mr-2" />
-                    Kirim Pesan
-                  </>
+                  <motion.div
+                    key="success-message"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col items-center justify-center text-center p-12 py-20 rounded-[2rem] border border-orange-500/30 bg-orange-500/5 backdrop-blur-md"
+                  >
+                    <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mb-8 shadow-2xl shadow-orange-500/50">
+                      <CheckCircle2 className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className={`text-3xl font-black mb-4 italic ${isDark ? 'text-white' : 'text-slate-900'}`}>Message Received!</h3>
+                    <p className={`leading-relaxed font-medium ${isDark ? 'text-slate-300' : 'text-slate-500'}`}>
+                      Thank you for the message,<br />
+                      <span className="text-orange-500 text-xl font-black block mt-2">Daffah will reply soon.</span>
+                    </p>
+                    <Button onClick={() => setSucceeded(false)} variant="ghost" className="mt-10 text-xs font-black tracking-widest text-orange-500 hover:text-orange-400 uppercase">
+                      Send Another Message
+                    </Button>
+                  </motion.div>
                 )}
-              </Button>
-            </form>
-          </motion.div>
+              </AnimatePresence>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
